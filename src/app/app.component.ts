@@ -1,10 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { JokesService } from './jokes.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [JokesService],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'pwa-example-angular';
+  jokes: any[];
+
+  constructor(private joke: JokesService) {
+
+  }
+  ngOnInit() {
+    this.joke.getRandomJokes().subscribe(
+      data => {
+        this.jokes = data.value;
+      },
+      error => {
+        console.warn(error);
+
+      }
+    );
+  }
+
 }
